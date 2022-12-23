@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+  <p>Welcome to <%= url %>
+  </p>
+  <p>
+    <%= propertyData.postcode %>
+  </p>
+  <p>
+    <%= propertyData.displayAddress %>
+  </p>
+  <p>
+    <%= propertyData.raw.prices.primaryPrice %>
+      <%= propertyData.raw.prices.displayPriceQualifier %>
+  </p>
+  <ul>
+    <% for(var i=0; i<soldData.length; i++) {%>
+      <li>
+        <%= soldData[i].address %>
+          <ul>
+            <% for(var j=0; j<soldData[i].transactions.length; j++) {%>
+              <li>
+                <%= soldData[i].transactions[j].displayPrice %>
+                  <%= soldData[i].transactions[j].dateSold %>
+                    <a href="<%= soldData[i].detailUrl %>" target=”_blank”>link</a>
+              </li>
+              <% } %>
+          </ul>
+      </li>
+      <% } %>
+  </ul>
+
+
+</body>
+
+</html>
