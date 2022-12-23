@@ -7,6 +7,7 @@
     "prebuild": "npm run lint",
     "build": "tsc",
     "_prestart": "npm run build",
+    "build_server": "npm run build && chmod +x dist/bin/www.js",
     "start": "nodemon ./bin/www.ts",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register '**/*.test.ts'",
     "lint": "eslint . --ext .ts"
