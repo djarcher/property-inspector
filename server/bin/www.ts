@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import app from '../app';
 import _debug from 'debug';
 import http from 'http';
