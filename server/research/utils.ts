@@ -32,7 +32,12 @@ export const getBuildingNumber = (displayAddress: string): number => {
 export const getPostCode = (displayAddress: string): string => {
   return '-' || displayAddress;
 }
-
+if (!fs.existsSync('./data')) {
+  fs.mkdirSync('./data');
+}
+if (!fs.existsSync('./data/html')) {
+  fs.mkdirSync('./data/html');
+}
 export const getHtml = async (url: URL) => {
   const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
 

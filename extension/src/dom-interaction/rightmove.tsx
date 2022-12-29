@@ -5,7 +5,7 @@ import Details from './detail';
 import './rightmove.css'
 
 const getResults: (urls: string[]) => Promise<PropertyDataResponse> = async (urls: string[]) => {
-  const raw = await fetch('http://localhost:8080/research/rightmove', {
+  const raw = await fetch('https://www.property-inspector.net/research/rightmove', {
     method: 'POST',
     body: JSON.stringify({ urls }, null, 2),
     headers: {
