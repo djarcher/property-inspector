@@ -43,7 +43,7 @@ if (!fs.existsSync('./data/html')) {
 
 export const getHtml = async (url: URL) => {
   throw new Error(`slkfjsdlkfjsldfjsdflk ${process.cwd()}`);
-  
+
   const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
 
 
@@ -54,7 +54,7 @@ export const getHtml = async (url: URL) => {
     return fs.readFileSync(fullPath, 'utf8');
   }
   // eslint-disable-next-line no-console
-  console.log('not early');
+  console.log('not early', process.cwd());
   const response = await fetch(url);
   const body = await response.text();
   fs.writeFileSync(fullPath, body);
