@@ -38,6 +38,9 @@ if (!fs.existsSync('./data')) {
 if (!fs.existsSync('./data/html')) {
   fs.mkdirSync('./data/html');
 }
+// eslint-disable-next-line no-console
+console.log('sdfsdfsdf', process.cwd());
+
 export const getHtml = async (url: URL) => {
   const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
 
