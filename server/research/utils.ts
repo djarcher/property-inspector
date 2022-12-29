@@ -42,7 +42,6 @@ if (!fs.existsSync('./data/html')) {
 
 
 export const getHtml = async (url: URL) => {
-  throw new Error(`slkfjsdlkfjsldfjsdflk ${process.cwd()}`);
 
   const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
 

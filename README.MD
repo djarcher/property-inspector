@@ -8,3 +8,4 @@ file is sudo nano /etc/systemd/system/property-inspector.service
 sudo systemctl start property-inspector
 note: in this file environment node_env=prod is set to hide stack traces on error
 
+don't forget to rebuild server!!!
