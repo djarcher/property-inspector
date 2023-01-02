@@ -8,8 +8,14 @@
     "default_title": "Open the popup"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs",
+    "webNavigation"
   ],
+  "background": {
+    "service_worker": "./static/js/background.js",
+    "type": "module"
+  },
   "content_scripts": [
     {
       "matches": [

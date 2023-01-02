@@ -3,12 +3,13 @@ import { extractRegex, getBuildingNumber, getHtml, getPostCode } from "./utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const extractSinglePriceHistory = (soldDataRaw: any): SoldPropertyPrice => {
-
+  //console.log('sss', soldDataRaw);
   const property: Property = {
     displayAddress: soldDataRaw.address,
     buildingNumber: getBuildingNumber(soldDataRaw.address),
     postcode: getPostCode(soldDataRaw.address),
-    numBedrooms: soldDataRaw.bedrooms || -1
+    numBedrooms: soldDataRaw.bedrooms || -1,
+    propertyType: soldDataRaw.propertyType  // usually unknown
   }
   const transactions: Transaction[] = [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,6 +46,7 @@ const getRelatedData: (properties: unknown[], filterFn: any) => GroupedByBedroom
   };
 
   priced.forEach(p => {
+    console.log('beds', p.property.numBedrooms);
     bedrooms.byBedroomNumber[p.property.numBedrooms] = bedrooms.byBedroomNumber[p.property.numBedrooms] || {
       properties: [],
       summary: {

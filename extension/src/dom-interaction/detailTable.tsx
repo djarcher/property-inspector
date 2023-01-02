@@ -48,11 +48,13 @@ const formatter = new Intl.NumberFormat('en-GB', {
 export default function DetailTable({
   title,
   soldPrices,
-  rentPrice
+  rentPrice,
+  postcodeOutcode
 }: {
     title: string,
     soldPrices: AverageSoldPrices,
-    rentPrice: number
+    rentPrice: number,
+    postcodeOutcode: string
 }) {
   
   return (
@@ -62,7 +64,7 @@ export default function DetailTable({
       <Table>
         {soldPrices.prices.length === 0 ? (
           <TableRow>
-            <TableColTitle>No sold price history found</TableColTitle>
+            <TableColTitle style={{ background: '#e0fbfc'}}>No sold price history found</TableColTitle>
         </TableRow>) : (
             
               soldPrices.prices.map((soldPrice: AverageSoldPrice, index: number) => <>
@@ -74,11 +76,13 @@ export default function DetailTable({
               </>)
         )}
         
+        {rentPrice > 0 ? 
+          <TableRow style={{ background: 'rgba(238, 108, 77, 0.2)' }}>
+            <TableColTitle>Current avg monthly rental ({postcodeOutcode}) </TableColTitle>
+            <TableCol>{rentPrice > 0 ? formatter.format(rentPrice) : 'no current rental data'}</TableCol>
+          </TableRow>
+        : null}
         
-        <TableRow style={{ background: 'rgba(238, 108, 77, 0.2)'}}>
-          <TableColTitle>Avg monthly rental </TableColTitle>
-          <TableCol>{rentPrice > 0 ?formatter.format(rentPrice) : 'no current rental data'}</TableCol>
-        </TableRow>
       </Table>
 
     </Section>

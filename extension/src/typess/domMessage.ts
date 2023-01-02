@@ -1,19 +1,15 @@
-import { AdvertisedProperty, SoldPrices, RentPrices } from "../../../server/types/property";
+import { AllPropertyDataResponse } from "../../../server/types/property";
 
 export type DOMMessageResponse = {
   title: string;
   headlines: string[];
 }
 
-export type PropertyDataResponse = {
-  propertyData:
-  {
-    [key: string]:
-    { propertyData: AdvertisedProperty, soldData: SoldPrices, rentData: RentPrices }
-  }
-}
-
 export type DOMMessage = {
   type: 'GET_DOM',
-  response: PropertyDataResponse | null
+  response: AllPropertyDataResponse | null
+}
+export type OtherDOMMessage = {
+  message: string,
+  url: string
 }

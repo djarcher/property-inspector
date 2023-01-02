@@ -1,14 +1,18 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { RentPrices, SoldPrices, AdvertisedProperty } from '../types/property';
+import { AllPropertyDataResponse } from '../types/property';
 
 const router = express.Router();
-import { getPropertyDetails } from '../research';
+import { getAllPropertyDetails, getPropertyDetails } from '../research';
 
 /* GET home page. */
 router.post('/', async (req: Request, res: Response) => {
   const url = req.body.url || [];
-  const { propertyData, soldData, rentData } = await getPropertyDetails(url);
+  const data = await getPropertyDetails(url);
+  if (!data) {
+    return res.sendStatus(500);
+  }
+  const { propertyData, soldData, rentData } = data;
   // console.log(soldData[0].transactions);
   return res.json({
     url: req.body.url,
@@ -27,17 +31,10 @@ router.post('/rightmove', async (req: Request, res: Response) => {
   const urls: string[] = req.body.urls || [];
   /* console.log(urls);
   return res.json({ foo: 'bar' }); */
-  const result: {[key:string]:{propertyData:AdvertisedProperty, soldData:SoldPrices, rentData:RentPrices}} = {};
-  for (let i = 0; i < urls.length; i++) {
-    const path = urls[i];
-    const url = `https://www.rightmove.co.uk${path}`;
-    const { propertyData, soldData, rentData } = await getPropertyDetails(url);
-    result[path] = { propertyData, soldData, rentData };
-  }
+  const result: AllPropertyDataResponse = await getAllPropertyDetails(urls);
+  
   res.setHeader('Access-Control-Allow-Origin', '*');
-  return res.json({
-    propertyData: result
-  })
+  return res.json(result);
   
   /* const { propertyData, soldData, rentData } = await getPropertyDetails(url);
   // console.log(soldData[0].transactions);

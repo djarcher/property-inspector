@@ -21,7 +21,8 @@ export interface Property {
   displayAddress: string,
   buildingNumber: number,
   postcode: string,
-  numBedrooms: number
+  numBedrooms: number,
+  propertyType: string
 }
 
 export interface AdvertisedProperty extends Property {
@@ -32,6 +33,10 @@ export interface AdvertisedProperty extends Property {
 export interface Transaction {
   date: Date,
   price: number
+}
+
+export type HtmlOptions = {
+  useLocalCache?: boolean
 }
 
 export interface SoldPropertyPrice {
@@ -57,6 +62,12 @@ export interface GroupedByBedroomsSoldPriceData {
   
 }
 
+export interface GroupedByBedroomsRentPriceData {
+  byBedroomNumber: {
+    [key: number]: RentalProperty[]
+  }
+}
+
 export interface SoldPrices {
   sameBuilding: GroupedByBedroomsSoldPriceData,/*  SoldPropertyPrice[], */
   samePostcode: GroupedByBedroomsSoldPriceData, /*  SoldPropertyPrice[] */
@@ -67,5 +78,19 @@ export interface RentalProperty extends Property {
   description: string
 }
 export interface RentPrices {
-  samePostcode: RentalProperty[]
+  samePostcode: GroupedByBedroomsRentPriceData
+}
+
+export type SinglePropertyDataResponse = {
+  propertyData: AdvertisedProperty,
+  soldData: SoldPrices,
+  rentData: RentPrices
+}
+
+export type AllPropertyDataResponse = {
+  propertyData:
+  {
+    [key: string]:SinglePropertyDataResponse
+  },
+  // missingData: string[]
 }
