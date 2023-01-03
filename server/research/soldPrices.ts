@@ -46,7 +46,7 @@ const getRelatedData: (properties: unknown[], filterFn: any) => GroupedByBedroom
   };
 
   priced.forEach(p => {
-    console.log('beds', p.property.numBedrooms);
+    //console.log('beds', p.property.numBedrooms);
     bedrooms.byBedroomNumber[p.property.numBedrooms] = bedrooms.byBedroomNumber[p.property.numBedrooms] || {
       properties: [],
       summary: {

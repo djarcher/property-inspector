@@ -100,10 +100,10 @@ const scrapeRightMoveRental: ({ postcode }: { postcode: string}) => Promise<Rent
 
     const bedrooms = item.querySelector('[data-test="property-details"] .property-information');
     if (!bedrooms) {
-      console.log('no bedrooms data');
+      //console.log('no bedrooms data');
       return;
     }
-    console.log('got beds');
+    //console.log('got beds');
     const numBedrooms = parseInt(bedrooms.innerHTML.split(' ')[0]);
 
     // eslint-disable-next-line no-console
@@ -139,6 +139,7 @@ const getRentPrices = async (propertyData: AdvertisedProperty) : Promise<RentPri
   //console.log(url);
 
   
+  // eslint-disable-next-line no-constant-condition
   if (true) {
     const result = await scrapeRightMoveRental({ postcode });
     return result;

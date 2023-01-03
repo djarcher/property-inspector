@@ -45,9 +45,7 @@ if (!fs.existsSync('./data/html')) {
 export const getHtml: (url: URL, options?: HtmlOptions) => Promise<string> = async (url, options = {}) => {
 
   const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
-  if (url.pathname.indexOf('property-to-rent') > -1) {
-    console.log(hash);
-  }
+  
   const useLocalCache = typeof options.useLocalCache === 'boolean' ? options.useLocalCache : true;
 
   const fullPath = `./data/html/${hash}.html`;
