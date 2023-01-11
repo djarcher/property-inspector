@@ -34,6 +34,8 @@ router.post('/rightmove', async (req: Request, res: Response) => {
   const result: AllPropertyDataResponse = await getAllPropertyDetails(urls);
   
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.setHeader("Access-Control-Allow-Headers", "Origin, x-access-token, X-Requested-With, Content-Type, Accept");
   return res.json(result);
   
   /* const { propertyData, soldData, rentData } = await getPropertyDetails(url);
