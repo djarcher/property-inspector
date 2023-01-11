@@ -29,7 +29,7 @@ const singleProperty = async () => {
   const msg = { response: results }
   //console.log(msg.response);
   l.innerHTML = '';
-  n.forEach(aa => aa.remove());
+  //n.forEach(aa => aa.remove());
 
   if (!Object.entries(msg.response.propertyData).length) {
     return;
@@ -40,7 +40,7 @@ const singleProperty = async () => {
     //console.log(node);
   
     const root = ReactDOM.createRoot(
-      div as HTMLElement
+      l as HTMLElement
     );
     //node?.appendChild(div);
     root.render(

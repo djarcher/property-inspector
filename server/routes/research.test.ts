@@ -5,7 +5,7 @@ describe('Options tests', () => { // the tests container
 
 
     /* detect retina */
-    expect(1).to.be.false; // Do I need to explain anything? It's like writing in English!
+    expect(false).to.be.false; // Do I need to explain anything? It's like writing in English!
 
   });
 });

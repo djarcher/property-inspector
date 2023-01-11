@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Property Inspector",
-  "version": "0.0.0.1",
+  "version": "0.0.0.2",
   "description": "The ultimate property extension for the Rightmove website. Sold prices and current rents of comparable properties. Free in beta",
   "action": {
     "default_popup": "index.html",

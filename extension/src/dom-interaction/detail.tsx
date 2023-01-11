@@ -34,7 +34,11 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
 
     //console.log('Property Inspector', soldData.samePostcode.byBedroomNumber, property.numBedrooms);
     const soldSamePostcode = soldData.samePostcode.byBedroomNumber[property.numBedrooms] ? Object.entries(soldData.samePostcode.byBedroomNumber[property.numBedrooms].summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
-    const soldSameBuilding = soldData.sameBuilding.byBedroomNumber[property.numBedrooms] ? Object.entries(soldData.sameBuilding.byBedroomNumber[property.numBedrooms].summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
+    let sameBuildingData = soldData.sameBuilding.byBedroomNumber[property.numBedrooms];
+    if (!sameBuildingData && property.propertyType === 'Detached' && Object.keys(soldData.sameBuilding.byBedroomNumber).length === 1) {
+      sameBuildingData = Object.values(soldData.sameBuilding.byBedroomNumber)[0];
+    }
+    const soldSameBuilding = sameBuildingData ? Object.entries(sameBuildingData.summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
     soldSamePostcode.sort((a, b) => b.year - a.year);
     soldSameBuilding.sort((a, b) => b.year - a.year);
     //const soldSamePostcode = soldData?.samePostcode.data[1] && soldData?.samePostcode.data[1].length ? soldData.samePostcode.data[1][0].transactions[0].price : 0;
@@ -50,7 +54,7 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
           textAlign: 'right',
           padding: '5px'
         }}>Other {property.numBedrooms} bed properties</h6>
-        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title="Properties in the same building" rentPrice={0} soldPrices={{ prices: soldSameBuilding }} />
+        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title={property.propertyType === 'Flat' ? "Properties in the same building" : "This Property"} rentPrice={0} soldPrices={{ prices: soldSameBuilding }} />
         <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title="Other properties same postcode" rentPrice={rent} soldPrices={{ prices: soldSamePostcode }} />
 
 

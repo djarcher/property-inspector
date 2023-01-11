@@ -1,8 +1,9 @@
 
 import { parse, HTMLElement } from 'node-html-parser'
 import { AdvertisedProperty, OfferType, RentPrices, RentalPeriod, SinglePropertyDataResponse, AllPropertyDataResponse } from '../types/property';
+import { getBuildingNumber } from './address';
 import { getSoldPrices } from './soldPrices';
-import { extractRegex, getBuildingNumber, getHtml } from './utils';
+import { extractRegex, getHtml } from './utils';
 
 const getRightmoveId : (url:string) => string = (url) => {
   return url.replace('/properties/', '').split('/')[0].replace('#', '');
@@ -14,8 +15,6 @@ const extractData = async (raw: string, url: string): Promise<AdvertisedProperty
 
   //console.log('propsdat', data.propertyData)
 
-
-   //console.log(data.propertyData);
   const result: AdvertisedProperty = {
     postcode: data.analyticsInfo.analyticsProperty.postcode,
     buildingNumber: getBuildingNumber(data.propertyData.address.displayAddress),
@@ -29,6 +28,7 @@ const extractData = async (raw: string, url: string): Promise<AdvertisedProperty
     numBedrooms: data.propertyData.bedrooms,
     propertyType: data.propertyData.propertySubType
   };
+
   return result;
 }
 
@@ -228,6 +228,7 @@ export const getPropertyDetails: (url: string) => Promise<SinglePropertyDataResp
   }
   
   const data = await parsePropertyDetails(parsedUrl, html);
+  //console.log(data);
 
   const soldData = await getSoldPrices(data);
   const rentData = await getRentPrices(data);

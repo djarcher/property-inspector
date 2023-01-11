@@ -9,6 +9,9 @@ const clean = (soCalledJson: string, replacement: string | RegExp) => {
   if (firstPass.indexOf('<script>') > 0) {
     firstPass = firstPass.substring(0, firstPass.indexOf('<script>'));
   }
+  if (firstPass.indexOf(';') === firstPass.length - 1) {
+    firstPass = firstPass.substring(0, firstPass.length - 1);
+  }
   return firstPass;
 }
 
@@ -19,7 +22,7 @@ export const extractRegex = (regex: RegExp, replacement: string | RegExp, raw: s
     console.log(regex, raw);
     throw new Error('boo');
   }
-  // console.log(title[0]);
+   //console.log(title[0]);
   // return null;
   const f = clean(title[0], replacement);
 
@@ -27,23 +30,6 @@ export const extractRegex = (regex: RegExp, replacement: string | RegExp, raw: s
   return data;
 }
 
-export const getBuildingNumber = (displayAddress: string): number => {
-  const parts = displayAddress.split(' ');
-  // console.log(parts[0]);
-  if (parts[0].indexOf('/') > -1) {
-    return parseInt(parts[0].split('/')[0], 10);
-  }
-
-  if (parts[0].indexOf(',') === parts[0].length - 1) {
-    return parseInt(parts[0], 10);
-  }
-
-  return parseInt(parts[0], 10);
-}
-
-export const getPostCode = (displayAddress: string): string => {
-  return '-' || displayAddress;
-}
 if (!fs.existsSync('./data')) {
   fs.mkdirSync('./data');
 }
