@@ -17,7 +17,7 @@ const getAverageRent = (rentData: RentPrices | null, numBedrooms: number, proper
 
   const same = rentData.samePostcode.byBedroomNumber[numBedrooms].filter(r => r.propertyType === propertyType);
 
-  console.log(rentData.samePostcode.byBedroomNumber[numBedrooms].length, same.length);
+  //console.log(rentData.samePostcode.byBedroomNumber[numBedrooms].length, same.length);
   return same.reduce((acc, r) => acc + r.rentalPrice.value, 0) / same.length;
 }
 
@@ -32,7 +32,7 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
 
     const rent = getAverageRent(rentData, property.numBedrooms, property.propertyType);
 
-    console.log('Property Inspector', soldData.samePostcode.byBedroomNumber, property.numBedrooms);
+    //console.log('Property Inspector', soldData.samePostcode.byBedroomNumber, property.numBedrooms);
     const soldSamePostcode = soldData.samePostcode.byBedroomNumber[property.numBedrooms] ? Object.entries(soldData.samePostcode.byBedroomNumber[property.numBedrooms].summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
     const soldSameBuilding = soldData.sameBuilding.byBedroomNumber[property.numBedrooms] ? Object.entries(soldData.sameBuilding.byBedroomNumber[property.numBedrooms].summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
     soldSamePostcode.sort((a, b) => b.year - a.year);

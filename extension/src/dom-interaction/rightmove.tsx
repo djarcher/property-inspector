@@ -1,33 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { AllPropertyDataResponse } from '../../../server/types/property';
+
 import { DOMMessage, DOMMessageResponse, OtherDOMMessage } from '../typess/domMessage';
-import Details from './detail';
+  import Details from './detail';
+import { getResults } from './functions';
 import './rightmove.css'
+import singleProperty from './single-property';
 
-const url = 'https://www.property-inspector.net/research/rightmove';
-//const url = 'http://localhost:8080/research/rightmove';
-const getResults: (urls: string[]) => Promise<AllPropertyDataResponse> = async (urls: string[]) => {
-  const raw = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({ urls }, null, 2),
-    headers: {
-      "content-type": "application/json"
-    }
-  });
-  const result: AllPropertyDataResponse = await raw.json();
-
-  return result;
-}
+let isListingPage = false;
 const onLoad = async () => {
+  if (window.location.hostname !== 'www.rightmove.co.uk') {
+    return;
+  }
+
   if (window.location.pathname.indexOf('to-rent') > -1) {
     return;
   }
-  console.log('here');
+  //console.log('here');
   if (window.location.pathname.indexOf('property-for-sale/find.html') === -1) {
-    console.log('sldkfjs');
+    const r = /\/properties\/\d+$/i;
+    if (window.location.pathname.match(r)) {
+      //console.log('hiya');
+      singleProperty();
+      return;
+    }
+    //console.log('sldkfjs');
     return;
   }
+  isListingPage = true;
   //console.log('[content.js]. Message received', msg);
   const n: HTMLElement[] = [];
   const divs = document.querySelectorAll('.propertyCard-price');
@@ -42,18 +42,18 @@ const onLoad = async () => {
   const headlines = Array.from(document.querySelectorAll("a[data-test=property-img]"))
     .map(h1 => h1.getAttribute('href') || '').filter(h => !!h.length);
   if (!headlines.length) {
-    console.log('nothing found');
+    //console.log('nothing found');
     return;
   }
 
   const results = await getResults(headlines);
 
   const msg = { response: results }
-  console.log(msg.response);
+  //console.log(msg.response);
   n.forEach(aa => aa.remove());
   Object.values(msg.response.propertyData).forEach(result => {
     const node = document.getElementById(`property-${result.propertyData.id}`)?.querySelector('.propertyCard-price');
-    console.log(node);
+    //console.log(node);
     const div = document.createElement('div');
     const root = ReactDOM.createRoot(
       div as HTMLElement
@@ -103,7 +103,7 @@ const messagesFromReactAppListener = (
   sender: chrome.runtime.MessageSender,
   sendResponse: (response: DOMMessageResponse) => void) => {
 
-  console.log('gottt it: ' + msg.message);
+  //console.log('gottt it: ' + msg.message);
   //setTimeout(onLoad, 5000);
   //onLoad();
 
@@ -117,10 +117,13 @@ chrome.runtime.onMessage.addListener(messagesFromReactAppListener);
 //chrome.runtime.sendMessage({ msg: 'this are it' });
 
 (async () => {
-  const observer = new MutationObserver(mCallback);
-  // call `observe()` on that MutationObserver instance,
-  // passing it the element to observe, and the options object
-  observer.observe(elementToObserve as Element, { subtree: true, childList: true });
+  if (isListingPage) {
+    const observer = new MutationObserver(mCallback);
+    // call `observe()` on that MutationObserver instance,
+    // passing it the element to observe, and the options object
+    observer.observe(elementToObserve as Element, { subtree: true, childList: true });
+  }
+  
   onLoad();
 
 })()
