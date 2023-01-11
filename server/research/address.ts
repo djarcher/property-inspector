@@ -3,7 +3,7 @@ const isFlatNumberOnly: (raw: string) => boolean = raw => {
   if (!hasFlatNumber) {
     return false;
   }
-  console.log(raw);
+  
   let working = raw;
   if (raw.indexOf(',') === raw.length - 1) {
     working = working.replace(',', '');
@@ -40,7 +40,7 @@ const getStreetAfterFlat: (raw: string) => string = (raw) => {
 }
 
 const getStreetAfterPlainNumber: (raw: string) => string = (raw) => {
-  console.log('checking plain', raw);
+  
   let working = raw.trim();
   if (working.indexOf(',') === working.length - 1) {
     working = working.replace(',', '');
@@ -51,9 +51,9 @@ const getStreetAfterPlainNumber: (raw: string) => string = (raw) => {
     return null;
   }
 
-  console.log('zer', parts[0]);
+  
   if (parseInt(parts[0]).toString() === parts[0]) {
-    console.log('yes num');
+  
     return parts.slice(1).join(' ');
   }
 
@@ -66,7 +66,7 @@ export const getStreet: (displayAddress: string) => string = (displayAddress) =>
   let part = parts[current];
   
   while (part) {
-    console.log('ppp', part);
+    
     const yesIsFlatNumberOnly = isFlatNumberOnly(part);
     if (yesIsFlatNumberOnly) {
       current += 1;
@@ -88,7 +88,7 @@ export const getStreet: (displayAddress: string) => string = (displayAddress) =>
     part = parts[current];
     
   }
-  console.log(displayAddress);
+  
   return '';
 } 
 

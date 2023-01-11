@@ -1,5 +1,5 @@
 import { SoldDataProvider } from "../../../types/soldData";
-import { getSoldPrices as rightmove } from "./rightmoveSoldPrices"
+//import { getSoldPrices as rightmove } from "./rightmoveSoldPrices"
 import { getSoldPrices as espc } from "./espcSoldPrices"
 import { SoldPrices } from "../../../types/property";
 

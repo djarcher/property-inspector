@@ -1,5 +1,5 @@
 import { getBuildingNumber, getStreet } from "../../address";
-import { GroupedByBedroomsSoldPriceData, Property, SoldPrices, SoldPropertyPrice, Transaction, SoldByYearSummary } from "../../../types/property";
+import { GroupedByBedroomsSoldPriceData, Property, SoldPrices, SoldPropertyPrice, Transaction } from "../../../types/property";
 import { extractRegex, getHtml } from "../../utils";
 import { doThisProperty } from "./shared";
 
