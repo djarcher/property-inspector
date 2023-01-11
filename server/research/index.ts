@@ -1,7 +1,7 @@
 
 import { parse, HTMLElement } from 'node-html-parser'
 import { AdvertisedProperty, OfferType, RentPrices, RentalPeriod, SinglePropertyDataResponse, AllPropertyDataResponse } from '../types/property';
-import { getBuildingNumber } from './address';
+import { getBuildingNumber, getStreet } from './address';
 import { getSoldPrices } from './soldPrices';
 import { extractRegex, getHtml } from './utils';
 
@@ -17,6 +17,7 @@ const extractData = async (raw: string, url: string): Promise<AdvertisedProperty
 
   const result: AdvertisedProperty = {
     postcode: data.analyticsInfo.analyticsProperty.postcode,
+    street: getStreet(data.propertyData.address.displayAddress),
     buildingNumber: getBuildingNumber(data.propertyData.address.displayAddress),
     displayAddress: data.propertyData.address.displayAddress,
     //raw: data.propertyData,
@@ -70,6 +71,7 @@ const scrapeRightMoveRental: ({ postcode }: { postcode: string}) => Promise<Rent
     result.samePostcode.byBedroomNumber[numBedrooms] = result.samePostcode.byBedroomNumber[numBedrooms] || [];
     result.samePostcode.byBedroomNumber[numBedrooms].push({
       displayAddress: 'unknown',
+      street: '',
       buildingNumber: -1,
       postcode: postcode,
       numBedrooms: numBedrooms,
@@ -114,6 +116,7 @@ const scrapeRightMoveRental: ({ postcode }: { postcode: string}) => Promise<Rent
     result.samePostcode.byBedroomNumber[numBedrooms] = result.samePostcode.byBedroomNumber[numBedrooms] || [];
     result.samePostcode.byBedroomNumber[numBedrooms].push({
       displayAddress: 'unknown',
+      street: '',
       buildingNumber: -1,
       postcode: postcode,
       numBedrooms: numBedrooms,
@@ -182,6 +185,7 @@ const getRentPrices = async (propertyData: AdvertisedProperty) : Promise<RentPri
 
       result.samePostcode.byBedroomNumber[1].push({
         displayAddress: 'unknown',
+        street: '',
         buildingNumber: -1,
         postcode: postcode,
         numBedrooms: -1,

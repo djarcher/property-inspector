@@ -35,8 +35,8 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
     //console.log('Property Inspector', soldData.samePostcode.byBedroomNumber, property.numBedrooms);
     const soldSamePostcode = soldData.samePostcode.byBedroomNumber[property.numBedrooms] ? Object.entries(soldData.samePostcode.byBedroomNumber[property.numBedrooms].summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
     let sameBuildingData = soldData.sameBuilding.byBedroomNumber[property.numBedrooms];
-    if (!sameBuildingData && property.propertyType === 'Detached' && Object.keys(soldData.sameBuilding.byBedroomNumber).length === 1) {
-      sameBuildingData = Object.values(soldData.sameBuilding.byBedroomNumber)[0];
+    if (!sameBuildingData && property.propertyType === 'Detached' && soldData.thisProperty) {
+      sameBuildingData = { properties: [{ property: property, transactions: soldData.thisProperty.transactions, detailUrl: ''}]} ;
     }
     const soldSameBuilding = sameBuildingData ? Object.entries(sameBuildingData.summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
     soldSamePostcode.sort((a, b) => b.year - a.year);

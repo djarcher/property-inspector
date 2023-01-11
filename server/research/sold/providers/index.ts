@@ -6,7 +6,7 @@ import { SoldPrices } from "../../../types/property";
 export const providers: SoldDataProvider[] = [
   /* {
     name: 'rightmove',
-    getSoldPrices
+    getSoldPrices: rightmove
   }, */
   {
     name: 'espc',
@@ -24,6 +24,7 @@ export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
   const results = await Promise.all(all);
   if (!results.length) {
     return {
+      thisProperty: null,
       sameBuilding: { byBedroomNumber: {} },
       samePostcode: { byBedroomNumber: {} },
     }

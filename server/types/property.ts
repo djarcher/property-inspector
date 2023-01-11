@@ -20,6 +20,7 @@ interface RentalPrice {
 export interface Property {
   displayAddress: string,
   buildingNumber: number,
+  street: string,
   postcode: string,
   numBedrooms: number,
   propertyType: string
@@ -45,17 +46,18 @@ export interface SoldPropertyPrice {
   transactions: Transaction[]
 }
 
+export interface SoldByYearSummary {
+  averageSoldPriceByYear: {
+    [key: number]: number
+  }
+}
 export interface GroupedByBedroomsSoldPriceData {
   
   
   byBedroomNumber: {
     [key: number]: {
       properties: SoldPropertyPrice[],
-      summary: {
-        averageSoldPriceByYear: {
-          [key: number]: number
-        }
-      }
+      summary: SoldByYearSummary
     },
 
   },
@@ -69,6 +71,10 @@ export interface GroupedByBedroomsRentPriceData {
 }
 
 export interface SoldPrices {
+  thisProperty: {
+    transactions: Transaction[],
+    summary: SoldByYearSummary
+  } | null,
   sameBuilding: GroupedByBedroomsSoldPriceData,/*  SoldPropertyPrice[], */
   samePostcode: GroupedByBedroomsSoldPriceData, /*  SoldPropertyPrice[] */
 }

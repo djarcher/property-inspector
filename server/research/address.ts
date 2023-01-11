@@ -1,3 +1,97 @@
+const isFlatNumberOnly: (raw: string) => boolean = raw => {
+  const hasFlatNumber = raw.indexOf('/') > -1  || raw.indexOf('f') > -1;
+  if (!hasFlatNumber) {
+    return false;
+  }
+  console.log(raw);
+  let working = raw;
+  if (raw.indexOf(',') === raw.length - 1) {
+    working = working.replace(',', '');
+  }
+  // 34/2
+  if (parseInt(working.replace('/', '')).toString() == working.replace('/', '')) {
+    return true;
+  }
+
+  // 2f1
+  if (parseInt(working.replace('f', '')).toString() == working.replace('f', '')) {
+    return true;
+  }
+
+  return false; 
+}
+
+const getStreetAfterFlat: (raw: string) => string = (raw) => {
+  let working = raw;
+  if (working.indexOf(',') === working.length - 1) {
+    working = working.replace(',', '');
+  }
+
+  const parts = working.split(' ');
+  if (parts.length === 1) {
+    return null;
+  }
+
+  if (isFlatNumberOnly(parts[0])) {
+    return parts.slice(1).join(' ');
+  }
+
+  return null;
+}
+
+const getStreetAfterPlainNumber: (raw: string) => string = (raw) => {
+  console.log('checking plain', raw);
+  let working = raw.trim();
+  if (working.indexOf(',') === working.length - 1) {
+    working = working.replace(',', '');
+  }
+
+  const parts = working.split(' ');
+  if (parts.length === 1) {
+    return null;
+  }
+
+  console.log('zer', parts[0]);
+  if (parseInt(parts[0]).toString() === parts[0]) {
+    console.log('yes num');
+    return parts.slice(1).join(' ');
+  }
+
+  return null;
+}
+
+export const getStreet: (displayAddress: string) => string = (displayAddress) => {
+  const parts = displayAddress.split(',');
+  let current = 0;
+  let part = parts[current];
+  
+  while (part) {
+    console.log('ppp', part);
+    const yesIsFlatNumberOnly = isFlatNumberOnly(part);
+    if (yesIsFlatNumberOnly) {
+      current += 1;
+      part = parts[current];
+      continue;
+    } 
+
+    const afterFlat = getStreetAfterFlat(part);
+    if (afterFlat) {
+      return afterFlat;
+    }
+
+    const afterPlainNumber = getStreetAfterPlainNumber(part);
+    if (afterPlainNumber) {
+      return afterPlainNumber;
+    }
+
+    current += 1;
+    part = parts[current];
+    
+  }
+  console.log(displayAddress);
+  return '';
+} 
+
 export const getBuildingNumber = (displayAddress: string): number => {
   const parts = displayAddress.split(' ');
   // console.log(parts[0]);

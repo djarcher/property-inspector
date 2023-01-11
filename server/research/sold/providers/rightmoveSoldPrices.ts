@@ -1,6 +1,7 @@
-import { getBuildingNumber, getPostCode } from "../../address";
+import { getBuildingNumber, getPostCode, getStreet } from "../../address";
 import { GroupedByBedroomsSoldPriceData, Property, SoldPrices, SoldPropertyPrice, Transaction } from "../../../types/property";
 import { extractRegex, getHtml } from "../../utils";
+import { doThisProperty } from "./shared";
 
 const fetchRawSoldPriceData: ({ postcode }: { postcode: string }) => Promise<string> = async ({ postcode }) => {
   const url = new URL(`https://www.rightmove.co.uk/house-prices/${postcode.toLowerCase().replace(' ', '-')}.html`);
@@ -13,6 +14,7 @@ const extractSinglePriceHistory = (soldDataRaw: any): SoldPropertyPrice => {
   //console.log('sss', soldDataRaw);
   const property: Property = {
     displayAddress: soldDataRaw.address,
+    street: getStreet(soldDataRaw.address),
     buildingNumber: getBuildingNumber(soldDataRaw.address),
     postcode: getPostCode(soldDataRaw.address),
     numBedrooms: soldDataRaw.bedrooms || -1,
@@ -87,11 +89,14 @@ export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
 
 
   const result: SoldPrices = {
+    thisProperty: null,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sameBuilding: getRelatedData(data.results.properties, (p: any) => getBuildingNumber(p.address) === propertyData.buildingNumber),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     samePostcode: getRelatedData(data.results.properties, (p: any) => getBuildingNumber(p.address) !== propertyData.buildingNumber)
   }
+
+  doThisProperty(propertyData, result);
 
   return result;
 }
