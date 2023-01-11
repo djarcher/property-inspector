@@ -3,6 +3,15 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { HtmlOptions } from '../types/property';
 
+const clean = (soCalledJson: string, replacement: string | RegExp) => {
+  let firstPass = soCalledJson.trim().replace(replacement, '').trim().replace('</script>', '').replace('</script></body></html>', '');
+  
+  if (firstPass.indexOf('<script>') > 0) {
+    firstPass = firstPass.substring(0, firstPass.indexOf('<script>'));
+  }
+  return firstPass;
+}
+
 export const extractRegex = (regex: RegExp, replacement: string | RegExp, raw: string) => {
   const title = regex.exec(raw);
   if (!title) {
@@ -12,7 +21,9 @@ export const extractRegex = (regex: RegExp, replacement: string | RegExp, raw: s
   }
   // console.log(title[0]);
   // return null;
-  const data = JSON.parse(title[0].trim().replace(replacement, '').trim().replace('</script>', ''));
+  const f = clean(title[0], replacement);
+
+  const data = JSON.parse(f);
   return data;
 }
 
