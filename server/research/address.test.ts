@@ -8,7 +8,12 @@ type AddressCase = {
 const cases : AddressCase[] = [{
   raw: "Craigview, 5 Vine Street, Clovenfords, Galashiels",
   result: 5
-}];
+},
+  
+  {
+    raw: "5/1, Morningside Drive, Edinburgh, Midlothian EH10 5LZ",
+    result: 5
+  }];
 describe('Get building number', () => { // the tests container
   
   cases.forEach(({raw, result}) => {
@@ -35,7 +40,11 @@ const streetCases: StreetCase[] = [{
   {
     raw: "3/4 Grey park, Galashiels",
     result: 'Grey park'
-  }];
+  },
+  {
+    raw: "5/1, Morningside Drive, Edinburgh, Midlothian EH10 5LZ",
+    result: 'Morningside Drive'
+}];
 
 describe('Get street', () => { // the tests container
 

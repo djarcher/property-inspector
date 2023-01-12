@@ -63,14 +63,18 @@ const getStreetAfterPlainNumber: (raw: string) => string = (raw) => {
 export const getStreet: (displayAddress: string) => string = (displayAddress) => {
   const parts = displayAddress.split(',');
   let current = 0;
-  let part = parts[current];
+  let part = parts[current].trim();
   
   while (part) {
     
     const yesIsFlatNumberOnly = isFlatNumberOnly(part);
     if (yesIsFlatNumberOnly) {
+      if (current === 0) {
+        return getStreet(displayAddress.replace(',',''));
+      }
+      
       current += 1;
-      part = parts[current];
+      part = parts[current].trim();
       continue;
     } 
 
@@ -85,7 +89,7 @@ export const getStreet: (displayAddress: string) => string = (displayAddress) =>
     }
 
     current += 1;
-    part = parts[current];
+    part = parts[current].trim();
     
   }
   
