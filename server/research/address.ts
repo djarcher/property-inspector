@@ -89,7 +89,7 @@ export const getStreet: (displayAddress: string) => string = (displayAddress) =>
     }
 
     current += 1;
-    part = parts[current].trim();
+    part = parts[current]?.trim();
     
   }
   

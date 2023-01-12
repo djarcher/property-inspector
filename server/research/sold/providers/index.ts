@@ -1,13 +1,13 @@
 import { SoldDataProvider } from "../../../types/soldData";
-//import { getSoldPrices as rightmove } from "./rightmoveSoldPrices"
+import { getSoldPrices as rightmove } from "./rightmoveSoldPrices"
 import { getSoldPrices as espc } from "./espcSoldPrices"
 import { SoldPrices } from "../../../types/property";
 
 export const providers: SoldDataProvider[] = [
-  /* {
+  {
     name: 'rightmove',
     getSoldPrices: rightmove
-  }, */
+  },
   {
     name: 'espc',
     getSoldPrices: espc
@@ -30,6 +30,17 @@ export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
     }
   }
 
-  //console.log(results[0]);
-  return results[0];
+  const result: SoldPrices = {
+    thisProperty: null,
+    sameBuilding: { byBedroomNumber: {} },
+    samePostcode: { byBedroomNumber: {} },
+  }
+
+  results.forEach(r => {
+    result.sameBuilding.byBedroomNumber = { ...result.sameBuilding.byBedroomNumber, ...r.sameBuilding.byBedroomNumber };
+    result.samePostcode.byBedroomNumber = { ...result.samePostcode.byBedroomNumber, ...r.sameBuilding.byBedroomNumber };
+  });
+
+  //console.log(results[0].sameBuilding.byBedroomNumber);
+  return result;
 }
