@@ -37,6 +37,7 @@ export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
   }
 
   results.forEach(r => {
+    //console.log(r.samePostcode.byBedroomNumber);
     result.sameBuilding.byBedroomNumber = { ...result.sameBuilding.byBedroomNumber, ...r.sameBuilding.byBedroomNumber };
     result.samePostcode.byBedroomNumber = { ...result.samePostcode.byBedroomNumber, ...r.samePostcode.byBedroomNumber };
     if (!result.thisProperty) {
@@ -45,5 +46,6 @@ export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
   });
 
   //console.log(results[0].sameBuilding.byBedroomNumber);
+  
   return result;
 }

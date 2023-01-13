@@ -84,6 +84,13 @@ const getRelatedData: (properties: unknown[], filterFn: any) => GroupedByBedroom
 export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
   const raw = await fetchRawSoldPriceData({ postcode: propertyData.postcode });
 
+  if (!raw) {
+    return {
+      thisProperty: null,
+      sameBuilding: {byBedroomNumber: {}},
+      samePostcode: {byBedroomNumber: {}}
+    }
+  }
   const titleRegex = /var initialProps = .*/i
   const replacement = 'var initialProps =';
   const data = extractRegex(titleRegex, replacement, raw);

@@ -41,7 +41,13 @@ if (!fs.existsSync('./data/html')) {
 
 export const getHtml: (url: URL, options?: HtmlOptions) => Promise<string> = async (url, options = {}) => {
 
-  const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
+  //const hash = crypto.createHash('md5').update(url.toString()).digest("hex");
+  const hash = url.toString()
+    .replace(/\?/gi, '-')
+    .replace(/\./gi, '_')
+    .replace(':', '-')
+    .replace(/\//gi, '-')
+    .replace(/\*/g, '-');
   
   const useLocalCache = typeof options.useLocalCache === 'boolean' ? options.useLocalCache : true;
 
@@ -57,6 +63,9 @@ export const getHtml: (url: URL, options?: HtmlOptions) => Promise<string> = asy
   try {
     const response = await fetch(url, { signal: AbortSignal.timeout(3000) });
 
+    if (response.status !== 200) {
+      return null;
+    }
 
     const body = await response.text();
     if (useLocalCache) {

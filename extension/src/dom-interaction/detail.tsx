@@ -3,6 +3,7 @@ import { Property, RentPrices, SoldPrices } from "../../../server/types/property
 import styles from './rightmove.module.css';
 import styled from 'styled-components';
 import DetailTable from "./detailTable";
+import { ByNumBedsByYearAverage } from "../typess/property";
 
 const Div = styled.div`
   background: #fff;
@@ -32,8 +33,22 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
 
     const rent = getAverageRent(rentData, property.numBedrooms, property.propertyType);
 
-    //console.log('Property Inspector', soldData.samePostcode.byBedroomNumber, property.numBedrooms);
+    //console.log('Property Inspector', soldData.samePostcode);
     const soldSamePostcode = soldData.samePostcode.byBedroomNumber[property.numBedrooms] ? Object.entries(soldData.samePostcode.byBedroomNumber[property.numBedrooms].summary.averageSoldPriceByYear).map(([year, amount]) => ({ year: year as unknown as number, amount })) : [];
+    const soldSamePostcodes: ByNumBedsByYearAverage = {};
+    Object.entries(soldData.samePostcode.byBedroomNumber).forEach(([beds, data]) => {
+      const entries = Object.entries(data.summary.averageSoldPriceByYear);
+      entries.sort(([yearA], [yearB]) => parseInt(yearB) - parseInt(yearA));
+      soldSamePostcodes[parseInt(beds)] = entries.map(([year, amount]) => ({ year: year as unknown as number, amount }));
+    });
+    const soldSameBuildings: ByNumBedsByYearAverage = {};
+    Object.entries(soldData.sameBuilding.byBedroomNumber)
+      .forEach(([beds, data]) => {
+        const entries = Object.entries(data.summary.averageSoldPriceByYear);
+        entries.sort(([yearA], [yearB]) => parseInt(yearB) - parseInt(yearA));
+      soldSameBuildings[parseInt(beds)] = entries.map(([year, amount]) => ({ year: year as unknown as number, amount }));
+    });
+    console.log('Property Inspector', soldSamePostcodes);
     let sameBuildingData = soldData.sameBuilding.byBedroomNumber[property.numBedrooms];
     if (!sameBuildingData && soldData.thisProperty) {
       sameBuildingData = {
@@ -62,8 +77,8 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
           textAlign: 'right',
           padding: '5px'
         }}>Other {property.numBedrooms} bed properties</h6>
-        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title={property.propertyType === 'Flat' ? "Properties in the same building" : "This Property"} rentPrice={0} soldPrices={{ prices: soldSameBuilding }} />
-        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title="Other properties same postcode" rentPrice={rent} soldPrices={{ prices: soldSamePostcode }} />
+        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title={property.propertyType === 'Flat' ? "Properties in the same building" : "This Property"} rentPrice={0} soldPrices={{ prices: soldSameBuildings }} />
+        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title="Other properties same postcode" rentPrice={rent} soldPrices={{ prices: soldSamePostcodes }} />
 
 
         {/* <div>Sold same building: {soldSameBuilding}</div>

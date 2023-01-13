@@ -24,6 +24,13 @@ export interface Property {
   numBedrooms: number
 }
 
+export interface AverageSoldPrice {
+  year: number,
+  amount: number
+}
+export interface ByNumBedsByYearAverage 
+  { [numBeds: number]: AverageSoldPrice [] }
+
 export interface AdvertisedProperty extends Property {
   advertisedPrice: AdvertisedPrice,
   id: string

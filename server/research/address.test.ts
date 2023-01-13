@@ -13,6 +13,10 @@ const cases : AddressCase[] = [{
   {
     raw: "5/1, Morningside Drive, Edinburgh, Midlothian EH10 5LZ",
     result: 5
+  },
+  {
+    raw: "6 2F3, Springvalley Terrace, Edinburgh, EH10 4QD",
+    result: 6
   }];
 describe('Get building number', () => { // the tests container
   

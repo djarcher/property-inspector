@@ -39,6 +39,11 @@ const extractData = async (raw: string, url: string): Promise<AdvertisedProperty
 const scrapeRightMoveRental: ({ postcode }: { postcode: string}) => Promise<RentPrices> = async ({postcode}) => {
   const url = `https://www.rightmove.co.uk/property-to-rent/${postcode.split(' ')[0]}.html`;
   const raw = await getHtml(new URL(url));
+  if (!raw) {
+    return {
+      samePostcode:{byBedroomNumber:{}}
+    }
+  }
   const regex = /<script>window.jsonModel((?!<\/script).)*/;
   const line = regex.exec(raw);
   if (!line) {

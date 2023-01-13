@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
+import { AverageSoldPrice, ByNumBedsByYearAverage } from "../typess/property";
 
 const Table = styled.div`
   display: table;
@@ -27,12 +28,8 @@ const Header = styled.header`
   text-decoration: underline;
   margin-bottom: 5px;
 `
-export interface AverageSoldPrice {
-  year: number,
-  amount: number
-}
 export interface AverageSoldPrices {
-  prices: AverageSoldPrice[]
+  prices: ByNumBedsByYearAverage
 }
 
 // Create our number formatter.
@@ -62,18 +59,23 @@ export default function DetailTable({
       <Header>{title}</Header>
       {/* <div class="line-break"></div> */}
       <Table>
-        {soldPrices.prices.length === 0 ? (
+        {Object.keys(soldPrices.prices).length === 0 ? (
           <TableRow>
             <TableColTitle style={{ background: '#e0fbfc'}}>No sold price history found</TableColTitle>
         </TableRow>) : (
-            
-              soldPrices.prices.map((soldPrice: AverageSoldPrice, index: number) => <>
+            Object.entries(soldPrices.prices).map(([numBeds, averageOverYears]) => <>
+              <TableRow>
+                <TableColTitle>{numBeds === '-1' ? 'Unknown number' : numBeds} bed average sold price </TableColTitle>
+              </TableRow>
+              {averageOverYears.map((soldPrice: AverageSoldPrice, index: number) => <>
                 <TableRow style={{ background: index % 2 === 0 ? '#e0fbfc' : '#fff' }}>
-                  <TableColTitle>Avg sold price ({soldPrice.year}) </TableColTitle>
+                  <TableColTitle>&nbsp;-&nbsp;{soldPrice.year}</TableColTitle>
                   <TableCol>{formatter.format(soldPrice.amount)}</TableCol>
                 </TableRow>
                 <TableRow></TableRow>
-              </>)
+              </>)}
+            </>)
+              
         )}
         
         {rentPrice > 0 ? 
