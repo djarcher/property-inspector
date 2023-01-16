@@ -64,6 +64,9 @@ export const getHtml: (url: URL, options?: HtmlOptions) => Promise<string> = asy
     const response = await fetch(url, { signal: AbortSignal.timeout(3000) });
 
     if (response.status !== 200) {
+      if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+      }
       return null;
     }
 
