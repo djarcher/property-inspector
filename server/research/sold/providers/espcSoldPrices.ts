@@ -4,9 +4,15 @@ import { extractRegex, getHtml } from "../../utils";
 import { doThisProperty } from "./shared";
 
 const fetchRawSoldPriceData: ({ postcode }: { postcode: string }) => Promise<string> = async ({ postcode }) => {
-  const url = new URL(`https://espc.com/house-prices/${postcode.toLowerCase().replace(' ', '-')}?ps=50`);
-  const raw = await getHtml(url);
-  return raw;
+  try {
+    const url = new URL(`https://espc.com/house-prices/${postcode.toLowerCase().replace(' ', '-')}?ps=50`);
+    const raw = await getHtml(url);
+    return raw;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('something bad', e);
+    return null;
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
