@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
-import crypto from 'crypto';
+//import crypto from 'crypto';
 import { HtmlOptions } from '../types/property';
 
 const clean = (soCalledJson: string, replacement: string | RegExp) => {
