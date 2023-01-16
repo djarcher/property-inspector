@@ -3,6 +3,13 @@ import { GroupedByBedroomsSoldPriceData, Property, SoldPrices, SoldPropertyPrice
 import { extractRegex, getHtml } from "../../utils";
 import { doThisProperty } from "./shared";
 
+const deleteRawSoldPriceData: ({ postcode }: { postcode: string }) => void = async ({ postcode }) => {
+  // clear here
+
+  // eslint-disable-next-line no-console
+  console.log(`Pretending to delete sold price data for espc for ${postcode}`);
+}
+
 const fetchRawSoldPriceData: ({ postcode }: { postcode: string }) => Promise<string> = async ({ postcode }) => {
   try {
     const url = new URL(`https://espc.com/house-prices/${postcode.toLowerCase().replace(' ', '-')}?ps=50`);
@@ -90,16 +97,27 @@ const getRelatedData: (properties: unknown[], filterFn: any) => GroupedByBedroom
 export const getSoldPrices = async (propertyData: any): Promise<SoldPrices> => {
   const raw = await fetchRawSoldPriceData({ postcode: propertyData.postcode });
 
+  const defaultResponse: SoldPrices = {
+    thisProperty: null,
+    sameBuilding: { byBedroomNumber: {} },
+    samePostcode: { byBedroomNumber: {} }
+  };
+
   if (!raw) {
-    return {
-      thisProperty: null,
-      sameBuilding: {byBedroomNumber: {}},
-      samePostcode: {byBedroomNumber: {}}
-    }
+    return defaultResponse;
   }
-  const titleRegex = /var initialProps = .*/i
-  const replacement = 'var initialProps =';
-  const data = extractRegex(titleRegex, replacement, raw);
+  let data;
+  try {
+    const titleRegex = /var initialProps = .*/i
+    const replacement = 'var initialProps =';
+    data = extractRegex(titleRegex, replacement, raw);
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('bad extract', e);
+    deleteRawSoldPriceData({ postcode: propertyData.postcode });
+    return defaultResponse;
+  }
+  
 
   //console.log('dddd', data);
   const properties = data.properties;
