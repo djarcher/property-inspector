@@ -46,12 +46,14 @@ export default function DetailTable({
   title,
   soldPrices,
   rentPrice,
-  postcodeOutcode
+  postcodeOutcode,
+  numBedrooms
 }: {
     title: string,
     soldPrices: AverageSoldPrices,
     rentPrice: number,
-    postcodeOutcode: string
+    postcodeOutcode: string,
+    numBedrooms: number
 }) {
   
   return (
@@ -65,11 +67,11 @@ export default function DetailTable({
         </TableRow>) : (
             Object.entries(soldPrices.prices).map(([numBeds, averageOverYears]) => <>
               <TableRow>
-                <TableColTitle>{numBeds === '-1' ? 'Unknown number' : numBeds} bed average sold price </TableColTitle>
+                <TableColTitle style={{fontWeight: 'bold'}}>{numBeds === '-1' ? 'Unknown number' : numBeds} bed average sold price </TableColTitle>
               </TableRow>
               {averageOverYears.map((soldPrice: AverageSoldPrice, index: number) => <>
                 <TableRow style={{ background: index % 2 === 0 ? '#e0fbfc' : '#fff' }}>
-                  <TableColTitle>&nbsp;-&nbsp;{soldPrice.year}</TableColTitle>
+                  <TableColTitle>&nbsp;&nbsp;&nbsp;&nbsp;{soldPrice.year}</TableColTitle>
                   <TableCol>{formatter.format(soldPrice.amount)}</TableCol>
                 </TableRow>
                 <TableRow></TableRow>
@@ -80,7 +82,7 @@ export default function DetailTable({
         
         {rentPrice > 0 ? 
           <TableRow style={{ background: 'rgba(238, 108, 77, 0.2)' }}>
-            <TableColTitle>Current avg monthly rental ({postcodeOutcode}) </TableColTitle>
+            <TableColTitle>Current avg monthly rental {numBedrooms} bed. ({postcodeOutcode}) </TableColTitle>
             <TableCol>{rentPrice > 0 ? formatter.format(rentPrice) : 'no current rental data'}</TableCol>
           </TableRow>
         : null}

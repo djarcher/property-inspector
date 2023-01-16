@@ -76,9 +76,9 @@ const Detail = function ({ property, soldData, rentData }: { property: Property,
           minHeight: '20px',
           textAlign: 'right',
           padding: '5px'
-        }}>Other {property.numBedrooms} bed properties</h6>
-        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title={property.propertyType === 'Flat' ? "Properties in the same building" : "This Property"} rentPrice={0} soldPrices={{ prices: soldSameBuildings }} />
-        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title="Other properties same postcode" rentPrice={rent} soldPrices={{ prices: soldSamePostcodes }} />
+        }}>Comparable properties</h6>
+        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title={property.propertyType === 'Flat' ? "Properties in the same building" : "This Property"} rentPrice={0} soldPrices={{ prices: soldSameBuildings }} numBedrooms={property.numBedrooms} />
+        <DetailTable postcodeOutcode={property.postcode.split(' ')[0]} title="Other properties same postcode" rentPrice={rent} soldPrices={{ prices: soldSamePostcodes }} numBedrooms={property.numBedrooms} />
 
 
         {/* <div>Sold same building: {soldSameBuilding}</div>

@@ -1,7 +1,7 @@
 import { AllPropertyDataResponse } from '../../../server/types/property';
 
-//const host = 'https://www.property-inspector.net';
-const host = 'http://localhost:8080';
+const host = 'https://www.property-inspector.net';
+//const host = 'http://localhost:8080';
 const url = `${host}/research/rightmove`;
 //const url = 'http://localhost:8080/research/rightmove';
 export const getResults: (urls: string[]) => Promise<AllPropertyDataResponse> = async (urls: string[]) => {
