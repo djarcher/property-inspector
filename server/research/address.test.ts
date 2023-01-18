@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getBuildingNumber, getStreet } from './address';
+import { getBuildingNumber, getStreet, getPostCode } from './address';
 
 type AddressCase = {
   raw: string,
@@ -13,6 +13,10 @@ const cases : AddressCase[] = [{
   {
     raw: "5/1, Morningside Drive, Edinburgh, Midlothian EH10 5LZ",
     result: 5
+  },
+  {
+    raw: "220, Wallace Street, Flat 3-49, Kingston Quay, Glasgow, G58AF",
+    result: 220
   },
   {
     raw: "6 2F3, Springvalley Terrace, Edinburgh, EH10 4QD",
@@ -56,6 +60,30 @@ describe('Get street', () => { // the tests container
     it('checking default options', () => { // the single test
 
       expect(getStreet(raw)).to.equal(result);
+
+      //expect(1).to.be.false;
+
+    });
+  })
+
+
+});
+
+const postcodeCases: StreetCase[] = [
+{
+  raw: "220, Wallace Street, Flat 3-49, Kingston Quay, Glasgow, G58AF",
+  result: 'G5 8AF'
+},
+{
+  raw: "5/1, Morningside Drive, Edinburgh, Midlothian EH10 5LZ",
+  result: 'EH10 5LZ'
+}];
+describe('Get postcode', () => { // the tests container
+
+  postcodeCases.forEach(({ raw, result }) => {
+    it('checking default options', () => { // the single test
+
+      expect(getPostCode(raw)).to.equal(result);
 
       //expect(1).to.be.false;
 

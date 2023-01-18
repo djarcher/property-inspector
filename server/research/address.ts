@@ -122,6 +122,15 @@ export const getBuildingNumber = (displayAddress: string): number => {
   return parseInt(part, 10);
 }
 
+//https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
+const postcodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/
 export const getPostCode = (displayAddress: string): string => {
-  return '-' || displayAddress;
+  const m = displayAddress.match(postcodeRegex);
+  if (!m || !m.length) {
+    return '-';
+  }
+  const magicOutcode = m[3].trim();
+  const code = m[0].replace(magicOutcode, '').trim();
+  return `${magicOutcode} ${code}`.toUpperCase();
+  //return '-' || displayAddress;
 }

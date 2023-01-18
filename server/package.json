@@ -10,7 +10,10 @@
     "build_server": "npm run build && chmod +x dist/bin/www.js",
     "start": "nodemon ./bin/www.ts",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register '**/*.test.ts'",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "deploy": "npm run lint && npm run build_server && npm run clean && scp -r ./dist/* alpha:/home/dave/projects/property-inspector/server/dist/ && npm run restart",
+    "clean": "ssh alpha 'rm -rf /home/dave/projects/property-inspector/server/dist/*'",
+    "restart": "ssh alpha 'sudo -S systemctl restart property-inspector'"
   },
   "scriptss": {
     "start": "nodemon ./bin/www.ts"
